@@ -13,6 +13,9 @@ def get_file_path(label):
     return os.path.join("data", "{0}.csv".format(label))
 
 
+def normalize_data(df):
+    return df/df.ix[0,:]
+
 def get_stock_data(labels, dates):
     df = pd.DataFrame(index=dates)
 
@@ -29,7 +32,7 @@ def get_stock_data(labels, dates):
         if label == 'SPY':
             df = df.dropna(subset=["SPY"])
 
-    return df
+    return normalize_data(df)
 
 
 def plot_data(df, columns, start_index, end_index, title):
