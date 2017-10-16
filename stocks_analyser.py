@@ -33,6 +33,11 @@ def get_stock_data(labels, dates):
     return normalize_data(df)
 
 
+def fill_missing_values(df_data):
+    df_data.fillna(method='ffill', inplace=True)
+    df_data.fillna(method='bfill', inplace=True)
+
+
 def plot_data(df, columns, start_index, end_index, title):
     df = df.ix[start_index:end_index, columns]
     ax = df.plot(title=title)
@@ -57,6 +62,7 @@ def main():
     dates = pd.date_range('2010-01-01', '2010-12-31')
     stock_symbols = ['GOOG', 'IBM', 'GLD']
     df = get_stock_data(stock_symbols, dates)
+    fill_missing_values(df)
     # plot_data(df, ['SPY', 'IBM'], '2010-03-01', '2010-04-01', "Stock prices")
 
      # Compute Bollinger Bands

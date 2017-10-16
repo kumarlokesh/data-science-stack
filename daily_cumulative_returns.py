@@ -26,6 +26,11 @@ def get_data(symbols, dates):
     return df
 
 
+def fill_missing_values(df_data):
+    df_data.fillna(method='ffill', inplace=True)
+    df_data.fillna(method='bfill', inplace=True)
+
+
 def plot_data(df, title="Stock prices", xlabel="Date", ylabel="Price"):
     ax = df.plot(title=title, fontsize=12)
     ax.set_xlabel(xlabel)
@@ -34,10 +39,10 @@ def plot_data(df, title="Stock prices", xlabel="Date", ylabel="Price"):
 
 
 def compute_daily_returns(df):
-    daily_returns = df.copy()
-    daily_returns = (df / df.shift(1)) - 1
-    daily_returns.ix[0, :] = 0
-    return daily_returns
+    returns = df.copy()
+    returns = (df / df.shift(1)) - 1
+    returns.ix[0, :] = 0
+    return returns
 
 
 def compute_cumulative_returns(df):
@@ -50,6 +55,7 @@ def main():
     dates = pd.date_range('2010-07-01', '2010-07-31')
     symbols = ['SPY','IBM']
     df = get_data(symbols, dates)
+    fill_missing_values(df)
     plot_data(df)
 
     daily_returns = compute_daily_returns(df)
